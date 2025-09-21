@@ -1,14 +1,21 @@
 using Microsoft.EntityFrameworkCore;
-using ms_net_store_usuarios.DBContext;
+using UsuariosApi.Configuration;
+using UsuariosApi.DBContext;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddSingleton<SettingsProvider>();
+
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
+var settingsProvider = new SettingsProvider(builder.Configuration);
+
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(settingsProvider.DefaultConnectionString));
+
 
 builder.Services.AddControllers();
 

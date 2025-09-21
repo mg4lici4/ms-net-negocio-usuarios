@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace ms_net_store_usuarios.DBContext;
+namespace UsuariosApi.DBContext;
 
 public class AppDbContext: DbContext
 {

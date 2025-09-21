@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 
-namespace ms_net_store_usuarios.controllers
+namespace UsuariosApi.controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
