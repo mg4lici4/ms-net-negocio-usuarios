@@ -1,5 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
+using UsuariosApi.Configuration;
+using UsuariosApi.Helpers;
+using UsuariosApi.Models.DTOs;
 
 namespace UsuariosApi.controllers
 {
@@ -7,31 +10,45 @@ namespace UsuariosApi.controllers
     [ApiController]
     public class HomeController : ControllerBase
     {
-        private readonly IConfiguration _configuration;
+        private readonly SettingsProvider _settingsProvider;
 
-        public HomeController(IConfiguration configuration)
+        public HomeController(SettingsProvider settingsProvider)
         {
-            _configuration = configuration;
+            _settingsProvider = settingsProvider;
         }
 
         [HttpGet]
         public IActionResult ProbarConexion()
         {
-            string connectionString = _configuration.GetConnectionString("DefaultConnection");
-
             try
             {
-                using var connection = new SqlConnection(connectionString);
+                using var connection = new SqlConnection(_settingsProvider.DefaultConnectionString);
                 connection.Open();
 
+
                 if (connection.State == System.Data.ConnectionState.Open)
-                    return Ok("✅ Conexión exitosa a SQL Server");
+                    return Ok(new ApiResponseDto<string>
+                    {
+                        Datos = null,
+                        Mensaje = MensajesHelper.CONEXION_BD_ABIERTA,
+                        TiempoRespuesta = TiempoRespuestaHelper.ObtenerTiempo(HttpContext)
+                    });
                 else
-                    return StatusCode(500, "❌ No se pudo abrir la conexión");
+                    return StatusCode(500, new ApiResponseDto<string>
+                    {
+                        Mensaje = MensajesHelper.CONEXION_BD_CERRADA,
+                        Datos = null,
+                        TiempoRespuesta = TiempoRespuestaHelper.ObtenerTiempo(HttpContext)
+                    });
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return StatusCode(500, $"❌ Error al conectar: {ex.Message}");
+                return StatusCode(500, new ApiResponseDto<string>
+                {
+                    Mensaje = MensajesHelper.ERROR_INTERNO_SERVIDOR,
+                    Datos = null,
+                    TiempoRespuesta = TiempoRespuestaHelper.ObtenerTiempo(HttpContext)
+                });
             }
         }
     }

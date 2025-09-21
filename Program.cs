@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using UsuariosApi.Configuration;
 using UsuariosApi.DBContext;
+using UsuariosApi.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +21,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddControllers();
 
 var app = builder.Build();
+app.UseMiddleware<TiempoRespuestaMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
