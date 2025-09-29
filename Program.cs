@@ -2,11 +2,15 @@ using Microsoft.EntityFrameworkCore;
 using UsuariosApi.Configuration;
 using UsuariosApi.DBContext;
 using UsuariosApi.Middlewares;
+using UsuariosApi.Profiles;
+using UsuariosApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddSingleton<SettingsProvider>();
 
+builder.Services.AddAutoMapper(cfg => { }, typeof(UsuarioProfile).Assembly);
+builder.Services.AddSingleton<SettingsProvider>();
+builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -16,7 +20,6 @@ var settingsProvider = new SettingsProvider(builder.Configuration);
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(settingsProvider.DefaultConnectionString));
-
 
 builder.Services.AddControllers();
 
