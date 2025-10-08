@@ -15,6 +15,12 @@ namespace UsuariosApi.Services
             _mapper = mapper;
         }
 
+        public UsuarioDto BusquedaPorIdUsuario(long idUsuario)
+        {
+            var usuario = _context.Usuarios.FirstOrDefault(x => x.IdUsuario.Equals(idUsuario));
+            return _mapper.Map<UsuarioDto>(usuario);
+        }
+
         public List<UsuarioDto> ObtenerUsuarios()
         {
             var usuarios = _context.Usuarios

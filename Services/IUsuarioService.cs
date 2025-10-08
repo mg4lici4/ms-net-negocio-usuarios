@@ -5,5 +5,6 @@ namespace UsuariosApi.Services
     public interface IUsuarioService
     {
         List<UsuarioDto> ObtenerUsuarios();
+        UsuarioDto BusquedaPorIdUsuario(long idUsuario);
     }
 }
