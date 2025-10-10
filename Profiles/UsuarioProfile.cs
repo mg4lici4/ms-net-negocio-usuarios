@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using UsuariosApi.Models.DTOs;
+using UsuariosApi.Models.DTOs.Usuario;
 using UsuariosApi.Models.Entities;
 
 namespace UsuariosApi.Profiles
@@ -9,6 +9,8 @@ namespace UsuariosApi.Profiles
         public UsuarioProfile()
         {
             CreateMap<UsuarioEntity, UsuarioDto>();
+
+            CreateMap<CrearUsuarioDto,UsuarioEntity>();
         }
     }
 }

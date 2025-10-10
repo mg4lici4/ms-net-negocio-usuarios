@@ -1,18 +1,17 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using UsuariosApi.Features.Usuarios.Commands;
 using UsuariosApi.Features.Usuarios.Queries;
 using UsuariosApi.Helpers;
-using UsuariosApi.Services;
+using UsuariosApi.Models.DTOs.Usuario;
 
 namespace UsuariosApi.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class UsuariosController(IMediator mediator, IUsuarioService usuarioService,
-        ILogger<UsuariosController> logger) : ControllerBase
+    public class UsuariosController(IMediator mediator) : ControllerBase
     {
         private readonly IMediator _mediator = mediator;
-        private readonly ILogger<UsuariosController> _logger = logger;
 
         [HttpGet]
         public async Task<IActionResult> ObtenerTodos()
@@ -34,6 +33,13 @@ namespace UsuariosApi.Controllers
                 return Ok(ResponseHelper.OperacionCorrecta(usuario, HttpContext));
 
             return NotFound(ResponseHelper.RecursoNoEncontrado(MensajesHelper.USUARIO_NO_ENCONTRADO, HttpContext));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CrearUsuario([FromBody] CrearUsuarioDto crearUsuarioDto)
+        {
+            var usuario = await _mediator.Send(new CrearUsuarioCommand(crearUsuarioDto));
+            return Ok(ResponseHelper.OperacionCorrecta(usuario, HttpContext));
         }
     }
 }

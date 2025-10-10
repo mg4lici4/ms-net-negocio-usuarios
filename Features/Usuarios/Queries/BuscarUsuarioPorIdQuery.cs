@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using UsuariosApi.Models.DTOs;
+using UsuariosApi.Models.DTOs.Usuario;
 
 namespace UsuariosApi.Features.Usuarios.Queries
 {

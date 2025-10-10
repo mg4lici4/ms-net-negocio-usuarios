@@ -1,24 +1,29 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using System.Threading;
 using UsuariosApi.DBContext;
-using UsuariosApi.Models.DTOs;
+using UsuariosApi.Models.DTOs.Usuario;
+using UsuariosApi.Models.Entities;
 
 namespace UsuariosApi.Services
 {
-    public class UsuarioService : IUsuarioService
+    public class UsuarioService(AppDbContext context, IMapper mapper) : IUsuarioService
     {
-        private readonly AppDbContext _context;
-        private readonly IMapper _mapper;
+        private readonly AppDbContext _context = context;
+        private readonly IMapper _mapper = mapper;
 
-        public UsuarioService(AppDbContext context, IMapper mapper)
+        public async Task<UsuarioDto> BusquedaPorIdUsuarioAsync(long idUsuario)
         {
-            _context = context;
-            _mapper = mapper;
+            var usuario = await _context.Usuarios.FirstOrDefaultAsync(x => x.IdUsuario.Equals(idUsuario));
+            return _mapper.Map<UsuarioDto>(usuario);
         }
 
-        public UsuarioDto BusquedaPorIdUsuario(long idUsuario)
+        public async Task<UsuarioDto> CrearRegistroAsync(CrearUsuarioDto crearUsuarioDto)
         {
-            var usuario = _context.Usuarios.FirstOrDefault(x => x.IdUsuario.Equals(idUsuario));
-            return _mapper.Map<UsuarioDto>(usuario);
+            var usuarioEntity = _mapper.Map<UsuarioEntity>(crearUsuarioDto);
+            await _context.Usuarios.AddAsync(usuarioEntity);
+            await _context.SaveChangesAsync();
+            return _mapper.Map<UsuarioDto>(usuarioEntity);
         }
 
         public IEnumerable<UsuarioDto> ObtenerUsuarios()

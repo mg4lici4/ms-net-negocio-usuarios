@@ -1,4 +1,4 @@
-﻿namespace UsuariosApi.Models.DTOs
+﻿namespace UsuariosApi.Models.DTOs.Usuario
 {
     public class UsuarioDto
     {

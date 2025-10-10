@@ -1,10 +1,10 @@
 ﻿using MediatR;
-using UsuariosApi.Models.DTOs;
+using UsuariosApi.Models.DTOs.Usuario;
 using UsuariosApi.Services;
 
 namespace UsuariosApi.Features.Usuarios.Queries
 {
-    public class BuscarUsuarioPorIdHandler : IRequestHandler<BuscarUsuarioPorIdQuery, UsuarioDto?>
+    public class BuscarUsuarioPorIdHandler : IRequestHandler<BuscarUsuarioPorIdQuery, UsuarioDto>
     {
         private readonly IUsuarioService _usuarioService;
         private readonly ILogger<BuscarUsuarioPorIdHandler> _logger;
@@ -15,12 +15,12 @@ namespace UsuariosApi.Features.Usuarios.Queries
             _logger = logger;
         }
 
-        public Task<UsuarioDto> Handle(BuscarUsuarioPorIdQuery request, CancellationToken cancellationToken)
+        public async Task<UsuarioDto> Handle(BuscarUsuarioPorIdQuery request, CancellationToken cancellationToken)
         {
             try
             {
-                var usuario = _usuarioService.BusquedaPorIdUsuario(request.IdUsuario);
-                return Task.FromResult(usuario);
+                var usuario = await _usuarioService.BusquedaPorIdUsuarioAsync(request.IdUsuario);
+                return usuario;
             }
             catch (Exception ex)
             {
