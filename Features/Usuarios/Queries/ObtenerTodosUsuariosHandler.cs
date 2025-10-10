@@ -10,12 +10,12 @@ namespace UsuariosApi.Features.Usuarios.Queries
         private readonly IUsuarioService _usuarioService = usuarioService;
         private readonly ILogger<ObtenerTodosUsuariosHandler> _logger = logger;
 
-        public Task<IEnumerable<UsuarioDto>> Handle(ObtenerTodosUsuariosQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<UsuarioDto>> Handle(ObtenerTodosUsuariosQuery request, CancellationToken cancellationToken)
         {
             try
             {
-                var usuarios = _usuarioService.ObtenerUsuarios();
-                return Task.FromResult(usuarios);
+                var usuarios = await _usuarioService.ObtenerRegistrosAsync();
+                return usuarios;
             }
             catch (Exception ex)
             {

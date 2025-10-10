@@ -4,7 +4,7 @@ namespace UsuariosApi.Services
 {
     public interface IUsuarioService
     {
-        IEnumerable<UsuarioDto> ObtenerUsuarios();
+        Task<IEnumerable<UsuarioDto>> ObtenerRegistrosAsync();
         Task<UsuarioDto> BusquedaPorIdUsuarioAsync(long idUsuario);
         Task<UsuarioDto> CrearRegistroAsync(CrearUsuarioDto crearUsuarioDto);
     }

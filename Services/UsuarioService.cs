@@ -26,11 +26,11 @@ namespace UsuariosApi.Services
             return _mapper.Map<UsuarioDto>(usuarioEntity);
         }
 
-        public IEnumerable<UsuarioDto> ObtenerUsuarios()
+        public async Task<IEnumerable<UsuarioDto>> ObtenerRegistrosAsync()
         {
-            var usuarios = _context.Usuarios
+            var usuarios = await _context.Usuarios
                            .OrderBy(u => u.IdUsuario)
-                           .ToList();
+                           .ToListAsync();
             return _mapper.Map<List<UsuarioDto>>(usuarios);
         }
     }
