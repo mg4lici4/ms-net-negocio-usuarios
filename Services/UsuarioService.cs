@@ -21,7 +21,7 @@ namespace UsuariosApi.Services
             return _mapper.Map<UsuarioDto>(usuario);
         }
 
-        public List<UsuarioDto> ObtenerUsuarios()
+        public IEnumerable<UsuarioDto> ObtenerUsuarios()
         {
             var usuarios = _context.Usuarios
                            .OrderBy(u => u.IdUsuario)

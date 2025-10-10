@@ -4,7 +4,7 @@ namespace UsuariosApi.Services
 {
     public interface IUsuarioService
     {
-        List<UsuarioDto> ObtenerUsuarios();
+        IEnumerable<UsuarioDto> ObtenerUsuarios();
         UsuarioDto BusquedaPorIdUsuario(long idUsuario);
     }
 }
